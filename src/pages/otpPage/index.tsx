@@ -16,7 +16,7 @@ export default function OtpPage() {
     const [error, setError] = useState<string | null>(null);
     const navigate = useNavigate();
 
-    // Create refs for each input field
+    //  Create refs for each input field
     const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
 
     // Handle change for individual OTP input fields
