@@ -20,7 +20,6 @@ export default function HomePage() {
   const handleFilterChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setFilter(e.target.value);
   };
-  
 
   const SAMPLE_LEADERBOARD: LeaderboardUser[] = [
     {
@@ -124,7 +123,6 @@ export default function HomePage() {
       rank: 10,
     },
   ];
-  
 
   return (
     <div className="flex flex-col h-full">
@@ -132,10 +130,10 @@ export default function HomePage() {
       <DesktopTitlebar pageTitle="Home Page" />
 
       {/* Main Content */}
-      <div className="flex flex-row flex-1 overflow-y-auto"> {/* Scrollable container */}
-        <div className="flex flex-col flex-1 gap-10 p-6">
+      <div className="flex flex-col md:flex-row overflow-y-auto">
+        <div className="flex flex-col flex-1 gap-10 p-4">
           {/* HomePageTabs */}
-          <div className="w-full flex flex-row justify-between gap-10">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
             <HomePageTab
               image={coin}
               statCount={300}
@@ -159,18 +157,18 @@ export default function HomePage() {
           {/* Remaining Space Container */}
           <div className="flex-1 text-black py-6 flex flex-col">
             {/* Top Row */}
-            <div className="flex justify-between items-center mb-6">
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
               <p className="text-lg font-medium">Today - {today}</p>
-              <div className="flex items-center space-x-4">
+              <div className="flex items-center space-x-4 w-full sm:w-auto">
                 <label htmlFor="filter" className="text-black text-lg font-medium">
                   Sort:
                 </label>
-                <div className="relative">
+                <div className="relative flex-1 sm:flex-none">
                   <select
                     id="filter"
                     value={filter}
                     onChange={handleFilterChange}
-                    className="bg-white text-black border border-gray-300 rounded px-4 py-2 pr-10 appearance-none"
+                    className="w-full sm:w-auto bg-white text-black border border-gray-300 rounded px-4 py-2 pr-10 appearance-none"
                   >
                     <option value="today">Today</option>
                     <option value="yesterday">Yesterday</option>
@@ -190,11 +188,10 @@ export default function HomePage() {
             </div>
           </div>
         </div>
-        <div className="pt-6 overflow-y-auto">
+        <div className="w-full md:w-auto md:pt-6 overflow-y-auto">
           <Leaderboard initialUsers={SAMPLE_LEADERBOARD} />
         </div>
       </div>
     </div>
   );
 }
-

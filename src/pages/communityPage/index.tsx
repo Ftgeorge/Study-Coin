@@ -131,26 +131,30 @@ const SAMPLE_LEADERBOARD: LeaderboardUser[] = [
 
 export default function CommunityPage() {
   return (
-    <div>
+    <div className="w-full h-full">
       <DesktopTitlebar pageTitle={"Our Community"} />
-      <div className="w-full flex flex-row px-4 py-8 gap-8 h-full flex-1">
-        <div className="w-full h-full flex-1">
-          <div className="mb-8 flex items-center gap-4">
+      
+      {/* Change flex-row to flex-col on mobile */}
+      <div className="w-full flex flex-col md:flex-row px-4 py-4 md:py-8 gap-4 md:gap-8 h-full">
+        
+        {/* Main content area */}
+        <div className="w-full md:flex-1">
+          <div className="mb-4 md:mb-8 flex items-center gap-4">
             <CreateQuestionDialog />
           </div>
-          <div className="">
-            <div className="space-y-4 w-full">
-              {SAMPLE_QUESTIONS.map((question) => (
-                <QuestionCard key={question.id} question={question} />
-              ))}
-            </div>
+          
+          <div className="space-y-4 w-full mb-4 md:mb-0">
+            {SAMPLE_QUESTIONS.map((question) => (
+              <QuestionCard key={question.id} question={question} />
+            ))}
           </div>
         </div>
-        <div className="overflow-y-auto flex-1">
+  
+        {/* Leaderboard - full width on mobile, side panel on desktop */}
+        <div className="w-full md:w-80 overflow-y-auto">
           <Leaderboard initialUsers={SAMPLE_LEADERBOARD} />
         </div>
       </div>
     </div>
-  )
+  );
 }
-

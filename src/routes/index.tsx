@@ -40,6 +40,10 @@ const routes: RouteConfig[] = [
     path: '/otp',
     element: <OtpPage />
   },
+  {
+    path: '*',
+    element: <div>404 - Page Not Found</div>
+  },
 
   {
     path: '/dashboard',
@@ -74,6 +78,10 @@ const routes: RouteConfig[] = [
       {
         path: 'store',
         element: <Store />
+      },
+      {
+        path: 'earn',
+        element: <></>
       },
       {
         path: 'settings',

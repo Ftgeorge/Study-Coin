@@ -21,7 +21,7 @@ export function Leaderboard({ initialUsers }: LeaderboardProps) {
   }, [users]);
 
   return (
-    <div className="rounded-lg border bg-white shadow p-6 w-96">
+    <div className="rounded-lg border bg-white shadow p-6 w-65">
       {/* Header */}
       <div className="flex items-center justify-between mb-6">
         <h2 className="text-xl font-semibold text-gray-800">Leaderboard</h2>
@@ -29,7 +29,7 @@ export function Leaderboard({ initialUsers }: LeaderboardProps) {
       </div>
 
       {/* Leaderboard Cards */}
-      <div className="space-y-4">
+      <div className="space-y-4 overflow-y-auto">
         {users.map((user, index) => (
           <div
             key={user.id}

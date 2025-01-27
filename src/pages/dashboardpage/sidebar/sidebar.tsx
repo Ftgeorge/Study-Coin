@@ -19,7 +19,7 @@ export default function DashboardLayout() {
   const isDesktop = useMediaQuery('(min-width: 768px)');
   const location = useLocation();
 
-  const NavItems = () => (
+  const NavItems = ({ closeSidebar }: { closeSidebar: () => void }) => (
     <>
       {NAV_ITEMS.map((item) => (
         <Button
@@ -31,7 +31,7 @@ export default function DashboardLayout() {
             }`}
           asChild
         >
-          <Link to={item.path}>
+          <Link to={item.path} onClick={closeSidebar}>
             <item.icon className="mr-3 h-5 w-5" />
             {item.name}
           </Link>
@@ -45,7 +45,7 @@ export default function DashboardLayout() {
       <div className="p-6">
         <h2 className="text-xl font-bold mb-8 text-[#2E74E5]">Learnit</h2>
         <nav className="space-y-4 mt-8">
-          <NavItems />
+          <NavItems closeSidebar={() => {}} />
         </nav>
       </div>
     </div>
@@ -54,7 +54,7 @@ export default function DashboardLayout() {
   const MobileSidebar = () => (
     <Sheet open={open} onOpenChange={setOpen}>
       <SheetTrigger asChild>
-        <Button variant="outline" size="icon" className="md:hidden">
+        <Button variant="outline" size="icon" className="md:hidden mt-7">
           <Menu className="h-4 w-4" />
         </Button>
       </SheetTrigger>
@@ -62,7 +62,7 @@ export default function DashboardLayout() {
         <div className="space-y-6 py-6">
           <h2 className="px-6 text-xl font-bold mb-8 text-[#2E74E5]">Learnit</h2>
           <nav className="space-y-4 mt-8">
-            <NavItems />
+            <NavItems closeSidebar={() => setOpen(false)} />
           </nav>
         </div>
       </SheetContent>

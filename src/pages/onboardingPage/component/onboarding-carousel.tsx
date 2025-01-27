@@ -14,10 +14,10 @@ interface Slide {
 
 const slides: Slide[] = [
   {
-    title: "Every task has a reward. \nWelcome to StudyCoin, where academic activities meet rewards",
+    title: "Every task has a reward. \nWelcome to Learnit, where academic activities meet rewards",
     showPrevArrow: false,
     showNextArrow: false,
-    autoAdvance: true
+    autoAdvance: true,
   },
   {
     image: "/images/Dayflow.png",
@@ -25,7 +25,7 @@ const slides: Slide[] = [
     title: "",
     showPrevArrow: false,
     showNextArrow: true,
-    autoAdvance: true
+    autoAdvance: true,
   },
   {
     image: "/images/Allura.png",
@@ -33,26 +33,33 @@ const slides: Slide[] = [
     title: "",
     showPrevArrow: true,
     showNextArrow: true,
-    autoAdvance: true
+    autoAdvance: true,
   },
   {
     title: "Every study clock is a mining clock",
     subtitle: "Earn points for early tune-ins",
     extraContent: (
-      <div className="flex justify-center gap-20 mt-8">
+      <div className="flex flex-col md:flex-row justify-center gap-8 md:gap-20 mt-8">
         <div className="text-center">
-          <img src="/images/book.png" alt="Book icon" width={100} height={100} className="text-[#0066FF]" />
-          <p className="text-[#0066FF]">Mining as you read alone</p>
+          <img
+            src="/images/book.png"
+            alt="Book icon"
+            className="w-16 h-16 md:w-24 md:h-24 text-[#0066FF] mx-auto"
+          />
+          <p className="text-[#0066FF] text-sm md:text-base mt-2">Mining as you read alone</p>
         </div>
         <div className="text-center">
-          <img src="/images/studygroup.png" alt="Group study icon" width={150} height={150} />
-          <p className="text-[#0066FF]">Earn for group study</p>
+          <img
+            src="/images/studygroup.png"
+            alt="Group study icon"
+            className="w-24 h-24 md:w-32 md:h-32 mx-auto"
+          />
+          <p className="text-[#0066FF] text-sm md:text-base mt-2">Earn for group study</p>
         </div>
       </div>
     ),
     showPrevArrow: true,
     showNextArrow: true,
-    
   },
 ];
 
@@ -74,7 +81,7 @@ export default function OnboardingCarousel() {
 
   const nextSlide = () => {
     if (currentSlide === slides.length - 1) {
-      navigate('/login');
+      navigate("/login");
     } else {
       setCurrentSlide((prev) => (prev + 1) % slides.length);
     }
@@ -88,20 +95,28 @@ export default function OnboardingCarousel() {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-white">
-      <div className="w-full max-w-2xl mx-auto px-4 relative">
-        <div className="text-center mb-12">
-          <h1 className="text-[#0066FF] text-3xl font-medium mb-4">{title}</h1>
+      <div className="w-full max-w-2xl mx-auto px-6 relative">
+        <div className="text-center mb-8 md:mb-12">
+          <h1 className="text-[#0066FF] text-2xl md:text-3xl font-medium mb-4 whitespace-pre-line">
+            {title}
+          </h1>
         </div>
 
         <div className="flex flex-col items-center relative">
           {image && (
-            <div className="relative w-full h-64">
-              <img src={image} alt={`Slide ${currentSlide + 1}`} className="object-contain w-full h-full" />
+            <div className="relative w-full h-48 md:h-64">
+              <img
+                src={image}
+                alt={`Slide ${currentSlide + 1}`}
+                className="object-contain w-full h-full"
+              />
             </div>
           )}
           {extraContent}
           {subtitle && (
-            <p className="text-[#0066FF] text-xl whitespace-pre-line mt-4 mb-8">{subtitle}</p>
+            <p className="text-[#0066FF] text-lg md:text-xl whitespace-pre-line mt-4 mb-8">
+              {subtitle}
+            </p>
           )}
 
           <NavigationArrows
@@ -112,17 +127,17 @@ export default function OnboardingCarousel() {
           />
         </div>
 
-        <DotNavigation 
-          totalDots={slides.length} 
-          activeDot={currentSlide} 
-          onDotClick={setCurrentSlide} 
+        <DotNavigation
+          totalDots={slides.length}
+          activeDot={currentSlide}
+          onDotClick={setCurrentSlide}
         />
       </div>
     </div>
   );
 }
 
-// Updated NavigationArrows Component
+// NavigationArrows Component
 interface NavigationArrowsProps {
   onPrevClick: () => void;
   onNextClick: () => void;
@@ -132,31 +147,29 @@ interface NavigationArrowsProps {
 
 function NavigationArrows({ onPrevClick, onNextClick, showPrev, showNext }: NavigationArrowsProps) {
   return (
-    <div className="absolute top-1/2 -left-16 -right-16 transform -translate-y-1/2 flex items-center justify-between">
-      {showPrev ? (
-        <button 
-          onClick={onPrevClick} 
-          className="text-[#0066FF] text-2xl z-10"
+    <div className="absolute top-1/2 left-2 right-2 transform -translate-y-1/2 flex items-center justify-between z-10">
+      {showPrev && (
+        <button
+          onClick={onPrevClick}
+          className="text-[#0066FF] text-2xl bg-white/50 rounded-full p-2 hover:bg-white/80 transition-all"
         >
-          <img 
-            src="images/leftarrow.png" 
-            alt="left" 
-            className="w-6 h-6 object-contain text-[#0066FF]" 
+          <img
+            src="images/leftarrow.png"
+            alt="left"
+            className="w-6 h-6 object-contain"
           />
         </button>
-      ) : (
-        <div className="w-8"></div>
       )}
-      
+
       {showNext && (
-        <button 
-          onClick={onNextClick} 
-          className="text-[#0066FF] text-2xl z-10 ml-auto"
+        <button
+          onClick={onNextClick}
+          className="text-[#0066FF] text-2xl bg-white/50 rounded-full p-2 hover:bg-white/80 transition-all"
         >
-          <img 
-            src="images/rightarrow.png" 
-            alt="arrow" 
-            className="w-8 h-8 object-contain text-[#0066FF]" 
+          <img
+            src="images/rightarrow.png"
+            alt="right"
+            className="w-6 h-6 object-contain"
           />
         </button>
       )}
@@ -164,7 +177,7 @@ function NavigationArrows({ onPrevClick, onNextClick, showPrev, showNext }: Navi
   );
 }
 
-// DotNavigation Component (unchanged)
+// DotNavigation Component
 interface DotNavigationProps {
   totalDots: number;
   activeDot: number;
@@ -178,7 +191,7 @@ function DotNavigation({ totalDots, activeDot, onDotClick }: DotNavigationProps)
         <Button
           key={index}
           onClick={() => onDotClick(index)}
-          className={`w-3 h-3 rounded-full mx-1 ${
+          className={`w-2 h-2 md:w-3 md:h-3 rounded-full mx-1 ${
             index === activeDot ? "bg-[#0066FF]" : "bg-gray-300"
           }`}
         />

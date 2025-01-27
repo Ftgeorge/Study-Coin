@@ -1,8 +1,10 @@
 import { ArrowLeft, ChevronDown } from 'lucide-react';
 import DesktopTitlebar from '../../../../components/header';
 import { useState } from 'react';
+import { Input } from '../../../../components/ui/input';
+import { Label } from '@radix-ui/react-label';
+import { Textarea } from '../../../../components/ui/textarea';
 import axios from 'axios';
-
 interface AssignmentPageForm {
     title: string;
     description: string;
@@ -27,7 +29,7 @@ const AssignmentPage = () => {
         assignment: null,
     });
     const [filterOpen, setFilterOpen] = useState(false);
-    const [error, setError] = useState<string | null>(null);
+    const [, setError] = useState<string | null>(null);
     const [loading, setLoading] = useState(false);
 
     const filteredAssignments = assignments.filter((assignment) =>
@@ -200,7 +202,7 @@ const AssignmentPage = () => {
                         <form onSubmit={handleSubmit}>
                             <div className="mb-4">
                                 <label className="block text-sm font-medium mb-1">Title</label>
-                                <input
+                                <Input
                                     type="text"
                                     name="title"
                                     value={formData.title}
@@ -209,17 +211,17 @@ const AssignmentPage = () => {
                                 />
                             </div>
                             <div className="mb-4">
-                                <label className="block text-sm font-medium mb-1">Description</label>
-                                <textarea
+                                <Label className="block text-sm font-medium mb-1">Description</Label>
+                                <Textarea
                                     name="description"
                                     value={formData.description}
                                     onChange={handleInputChange}
                                     className="w-full px-3 py-2 border rounded"
-                                ></textarea>
+                                ></Textarea>
                             </div>
                             <div className="mb-4">
-                                <label className="block text-sm font-medium mb-1">Upload File</label>
-                                <input
+                                <Label className="block text-sm font-medium mb-1">Upload File</Label>
+                                <Input
                                     type="file"
                                     name="assignment"
                                     accept="image/*"
@@ -237,7 +239,7 @@ const AssignmentPage = () => {
                             </div>
                         </form>
                     </div>
-                    {error && <p className="text-red-500 text-sm text-center">{error}</p>}
+                    
                 </div>
             )}
         </div>
