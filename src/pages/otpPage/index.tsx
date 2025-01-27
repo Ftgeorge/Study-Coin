@@ -1,4 +1,4 @@
-import { useState, FormEvent } from "react";
+import { useState, useRef, FormEvent } from "react";
 import { Label } from "../../components/ui/label";
 import { Button } from "../../components/ui/button";
 import { Input } from "../../components/ui/input";
@@ -16,11 +16,33 @@ export default function OtpPage() {
     const [error, setError] = useState<string | null>(null);
     const navigate = useNavigate();
 
+    // Create refs for each input field
+    const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
+
     // Handle change for individual OTP input fields
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>, index: number) => {
+        const value = e.target.value;
         const newOtpCode = formData.otpCode.split("");
-        newOtpCode[index] = e.target.value;
+
+        // Allow only numbers
+        if (!/^\d$/.test(value) && value !== "") return;
+
+        newOtpCode[index] = value;
         setFormData({ otpCode: newOtpCode.join("") });
+
+        // Move to the next input field if the value is not empty
+        if (value && index < inputRefs.current.length - 1) {
+            inputRefs.current[index + 1]?.focus();
+        }
+    };
+
+    const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>, index: number) => {
+        if (e.key === "Backspace" && !formData.otpCode[index]) {
+            // Move focus to the previous input field
+            if (index > 0) {
+                inputRefs.current[index - 1]?.focus();
+            }
+        }
     };
 
     const handleSubmit = async (e: FormEvent) => {
@@ -77,9 +99,11 @@ export default function OtpPage() {
                                     type="text"
                                     maxLength={1}
                                     required
+                                    ref={(el) => (inputRefs.current[index] = el)}
                                     className="border-gray-300 h-12 w-12 text-center"
                                     value={formData.otpCode[index] || ""}
                                     onChange={(e) => handleInputChange(e, index)}
+                                    onKeyDown={(e) => handleKeyDown(e, index)}
                                     autoFocus={index === 0}
                                 />
                             ))}

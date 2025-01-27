@@ -1,6 +1,7 @@
 import { ArrowLeft, ChevronDown } from 'lucide-react';
 import DesktopTitlebar from '../../../../components/header';
 import { useState } from 'react';
+import axios from 'axios';
 
 interface AssignmentPageForm {
     title: string;
@@ -63,32 +64,37 @@ const AssignmentPage = () => {
         setLoading(true);
         setError(null);
 
-        // Simulate submission process
+        const { title, description, assignment } = formData;
+
+        if (!title || !description || !assignment) {
+            setError('All fields are required');
+            setLoading(false);
+            return;
+        }
+
+        const formDataToSend = new FormData();
+        formDataToSend.append('title', title);
+        formDataToSend.append('description', description);
+        formDataToSend.append('file', assignment);
+
         try {
-            // Simulate an API call
+            const response = await axios.post('https://studycoin-w4q3.onrender.com/api/v1/assignment/submit', formDataToSend, {
+                headers: { 'Content-Type': 'application/json' },
+            });
+
+            const { data } = response;
             const newAssignment = {
-                id: assignments.length + 1,
-                title: formData.title,
-                description: formData.description,
-                url: 'http://example.com/new-assignment', // Placeholder URL
-                status: 'Pending',
-                createdAt: new Date().toISOString().split('T')[0],
-                updatedAt: new Date().toISOString().split('T')[0],
+                id: data.assignment._id,
+                title: data.assignment.title,
+                description: data.assignment.description,
+                url: data.assignment.url,
+                status: data.assignment.status,
+                createdAt: data.assignment.createdAt,
+                updatedAt: data.assignment.updatedAt,
             };
 
-            // Simulate server response delay
-            await new Promise((resolve) => setTimeout(resolve, 1000));
-
-            // Add new assignment to the list
             setAssignments((prev) => [...prev, newAssignment]);
             setModalOpen(false);
-
-            // Clear form data
-            setFormData({
-                title: '',
-                description: '',
-                assignment: null,
-            });
         } catch (err) {
             setError('Failed to submit the assignment. Please try again.');
         } finally {
@@ -215,7 +221,7 @@ const AssignmentPage = () => {
                                 <label className="block text-sm font-medium mb-1">Upload File</label>
                                 <input
                                     type="file"
-                                    name="image"
+                                    name="assignment"
                                     accept="image/*"
                                     onChange={handleInputChange}
                                     className="w-full px-3 py-2 border rounded"
@@ -231,6 +237,7 @@ const AssignmentPage = () => {
                             </div>
                         </form>
                     </div>
+                    {error && <p className="text-red-500 text-sm text-center">{error}</p>}
                 </div>
             )}
         </div>

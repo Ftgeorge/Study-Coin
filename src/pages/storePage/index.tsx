@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Button } from "../../components/ui/button";
 import { SlidersHorizontal } from "lucide-react";
 import DesktopTitlebar from "../../components/header";
+import coin from "../../../public/images/coin.png";
 
 interface Product {
   id: number;
@@ -123,21 +124,20 @@ export default function Store() {
             />
             <h2 className="text-2xl font-semibold mb-2">{selectedProduct.name}</h2>
             <p className="text-muted-foreground mb-4">{selectedProduct.description}</p>
-            <p className="text-lg font-bold mb-4">Price: ${selectedProduct.price}</p>
-            <p
-              className={`text-lg font-bold ${
-                userPoints >= selectedProduct.price ? "text-green-600" : "text-red-600"
-              }`}
-            >
-              Points Balance: {userPoints >= selectedProduct.price ? (
-                <>
-                  {userPoints} - {selectedProduct.price} = {userPoints - selectedProduct.price} points
-                </>
-              ) : (
-                <>Insufficient points</>
-              )}
-            </p>
-            <div className="flex justify-end gap-2">
+            <div className="flex w-full flex-row items-center justify-between">
+              <p className="text-lg font-bold">Price: ${selectedProduct.price}</p>
+              <div className="flex gap-2 items-center h-full">
+                <img src={coin} className="w-10 h-10" />
+                <p
+                  className={`text-lg font-bold ${userPoints >= selectedProduct.price ? "text-black" : "text-red-600"
+                    }`}
+                >
+                  300
+                </p>
+              </div>
+            </div>
+
+            <div className="flex justify-end gap-2 pt-5">
               <Button variant="outline" onClick={closeModal}>
                 Close
               </Button>

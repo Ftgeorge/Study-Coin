@@ -13,15 +13,14 @@ interface SignupForm {
 
 export default function SignupPage() {
     const [formData, setFormData] = useState<SignupForm>({
-        fullname: '',
-        email: '',
-        password: '',
-        userType: '',
+        fullname: "",
+        email: "",
+        password: "",
+        userType: "",
     });
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const navigate = useNavigate();
-
 
     const handleSubmit = async (e: FormEvent) => {
         e.preventDefault();
@@ -29,40 +28,47 @@ export default function SignupPage() {
         setError(null);
 
         try {
-            const response = await fetch("https://studycoin-w4q3.onrender.com/api/v1/auth/signup", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify(formData),
-            });
+            const response = await fetch(
+                "https://studycoin-w4q3.onrender.com/api/v1/auth/signup",
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify(formData),
+                }
+            );
 
             if (!response.ok) {
                 const errorData = await response.json();
-                console.log("Error Data:", errorData);  // Add this line to inspect the error response
-                throw new Error(errorData?.message || 'Something went wrong!');
+                console.log("Error Data:", errorData); // Log the error response for debugging
+                throw new Error(errorData?.message || "Something went wrong!");
             }
-
 
             const data = await response.json();
             console.log(data);
-            navigate("/otp");
+
+            // Extract OTP code
+            const otpCode = data?.data?.user?.otp?.code;
+            if (otpCode) {
+                navigate("/otp");
+                alert(`Your OTP is: ${otpCode}`); // Alert OTP after navigation
+            } else {
+                throw new Error("OTP not found in response");
+            }
 
             setFormData({
-                fullname: '',
-                email: '',
-                password: '',
-                userType: '',
+                fullname: "",
+                email: "",
+                password: "",
+                userType: "",
             });
-
         } catch (err: any) {
-            setError(err.message || 'An unexpected error occurred');
+            setError(err.message || "An unexpected error occurred");
         } finally {
             setLoading(false);
         }
     };
-
-
 
     return (
         <div className="min-h-screen flex items-center justify-center p-4">
@@ -87,7 +93,9 @@ export default function SignupPage() {
                             required
                             className="border-gray-300 h-12"
                             value={formData.fullname}
-                            onChange={(e) => setFormData({ ...formData, fullname: e.target.value })}
+                            onChange={(e) =>
+                                setFormData({ ...formData, fullname: e.target.value })
+                            }
                         />
                     </div>
 
@@ -101,7 +109,9 @@ export default function SignupPage() {
                             required
                             className="border-gray-300 h-12"
                             value={formData.email}
-                            onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                            onChange={(e) =>
+                                setFormData({ ...formData, email: e.target.value })
+                            }
                         />
                     </div>
 
@@ -115,7 +125,9 @@ export default function SignupPage() {
                             required
                             className="border-gray-300 h-12"
                             value={formData.password}
-                            onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+                            onChange={(e) =>
+                                setFormData({ ...formData, password: e.target.value })
+                            }
                         />
                     </div>
 
@@ -123,12 +135,12 @@ export default function SignupPage() {
                         id="userType"
                         required
                         className="border border-gray-300 rounded h-12 w-full px-3 text-gray-900"
-                        value={formData.userType}  // Bind the selected value to formData.userType
+                        value={formData.userType}
                         onChange={(e) => {
-                            const value = e.target.value; // Get the value from the selected option
-                            setFormData(prevFormData => ({
+                            const value = e.target.value;
+                            setFormData((prevFormData) => ({
                                 ...prevFormData,
-                                userType: value,  // Update userType in formData
+                                userType: value,
                             }));
                         }}
                     >
@@ -138,8 +150,6 @@ export default function SignupPage() {
                         <option value="Student">Student</option>
                         <option value="Lecturer">Lecturer</option>
                     </select>
-
-
 
                     {error && <p className="text-red-500 text-sm">{error}</p>}
                     <div>
